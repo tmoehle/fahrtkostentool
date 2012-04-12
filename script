@@ -1,0 +1,9 @@
+#!/bin/bash
+startplz="21244"
+plz_roh=`cat plz_roh`
+for zielplz in $plz_roh
+do
+	distance=`curl -s "http://maps.googleapis.com/maps/api/distancematrix/xml?origins=DE+$startplz&mode=driving&units=metric&destinations=DE+$zielplz&sensor=false" | xmlstarlet sel -T -t -m "/DistanceMatrixResponse/row/element/distance" -v text`
+	echo -e "$zielplz,$distance," >> plz_km
+	sleep 0.1 # um das API Limit einzuhalten
+done 
